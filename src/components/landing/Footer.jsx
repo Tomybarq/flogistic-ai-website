@@ -29,10 +29,11 @@ export default function Footer() {
           {/* Brand Column */}
           <div className="col-span-2">
             <div className="flex items-center gap-3 mb-6">
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-emerald-500 flex items-center justify-center">
-                <span className="text-white font-bold text-lg">F</span>
-              </div>
-              <span className="text-white font-semibold text-xl">Flogistic</span>
+              <img 
+                src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/698693974567338469dd516f/538a6a95a_Logo.png" 
+                alt="Flogistic Solutions Co"
+                className="h-12 w-auto"
+              />
             </div>
             <p className="text-slate-400 text-sm mb-6 max-w-xs">
               Empowering enterprises with cutting-edge AI solutions for sustainable growth and innovation.

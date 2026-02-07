@@ -32,6 +32,16 @@ export default function HeroSection() {
 
   return (
     <section id="home" className="relative min-h-screen flex items-center overflow-hidden bg-gradient-to-br from-[#0a0f1c] via-[#0d1424] to-[#0a0f1c]">
+      {/* Cover Image Background */}
+      <div className="absolute inset-0 opacity-20">
+        <img 
+          src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/698693974567338469dd516f/7cda83df0_CoverProfile.png"
+          alt="Flogistic Solutions"
+          className="w-full h-full object-cover"
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#0a0f1c]/80 via-[#0d1424]/60 to-[#0a0f1c]/90" />
+      </div>
+      
       {/* Animated Background Grid */}
       <div className="absolute inset-0 bg-[linear-gradient(rgba(59,130,246,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(59,130,246,0.03)_1px,transparent_1px)] bg-[size:64px_64px]" />
       
