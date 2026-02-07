@@ -1,37 +1,23 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Quote, ChevronLeft, ChevronRight, Star } from 'lucide-react';
 import { Button } from "@/components/ui/button";
-
-const testimonials = [
-  {
-    quote: "Flogistic Solutions transformed our marketing operations. Their AI automation increased our conversion rates by 240% in just 6 months.",
-    author: "Sarah Mitchell",
-    role: "CMO, TechCorp Global",
-    avatar: "SM",
-    rating: 5,
-  },
-  {
-    quote: "The predictive analytics platform has given us insights we never thought possible. Our decision-making is now data-driven and incredibly accurate.",
-    author: "Ahmed Al-Rashid",
-    role: "CEO, Middle East Ventures",
-    avatar: "AA",
-    rating: 5,
-  },
-  {
-    quote: "Implementation was seamless and the ROI was immediate. Their team truly understands enterprise AI needs.",
-    author: "Lisa Chen",
-    role: "CTO, Innovation Labs",
-    avatar: "LC",
-    rating: 5,
-  },
-];
+import { LanguageContext } from '@/pages/Home';
+import { translations } from './translations';
 
 const clientLogos = [
   'TechCorp', 'GlobalTech', 'InnovateCo', 'FutureSoft', 'DataDrive', 'CloudNext'
 ];
 
 export default function TestimonialsSection() {
+  const { language } = useContext(LanguageContext);
+  const t = translations[language].testimonials;
+  
+  const testimonials = t.items.map((item, index) => ({
+    ...item,
+    avatar: ['SM', 'AA', 'LC'][index],
+    rating: 5,
+  }));
   const [activeIndex, setActiveIndex] = useState(0);
   const [direction, setDirection] = useState(0);
 
@@ -87,7 +73,7 @@ export default function TestimonialsSection() {
           className="mb-20"
         >
           <p className="text-center text-slate-500 text-sm uppercase tracking-wider mb-8">
-            Trusted by Industry Leaders
+            {t.trusted}
           </p>
           <div className="flex flex-wrap justify-center items-center gap-8 md:gap-16">
             {clientLogos.map((logo, index) => (
@@ -113,10 +99,10 @@ export default function TestimonialsSection() {
           className="text-center mb-16"
         >
           <span className="inline-block px-4 py-2 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-sm mb-6">
-            Testimonials
+            {t.badge}
           </span>
           <h2 className="text-3xl md:text-4xl font-bold text-white">
-            What Our Clients Say
+            {t.title}
           </h2>
         </motion.div>
         

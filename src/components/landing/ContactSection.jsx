@@ -1,33 +1,37 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { motion } from 'framer-motion';
 import { Mail, Phone, MapPin, Send, Loader2, CheckCircle } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-
-const contactInfo = [
-  {
-    icon: Mail,
-    title: 'Email',
-    value: 'contact@flogistic.com',
-    href: 'mailto:contact@flogistic.com',
-  },
-  {
-    icon: Phone,
-    title: 'Phone',
-    value: '+1 (555) 123-4567',
-    href: 'tel:+15551234567',
-  },
-  {
-    icon: MapPin,
-    title: 'Location',
-    value: 'Global Offices',
-    href: null,
-  },
-];
+import { LanguageContext } from '@/pages/Home';
+import { translations } from './translations';
 
 export default function ContactSection() {
+  const { language } = useContext(LanguageContext);
+  const t = translations[language].contact;
+  
+  const contactInfo = [
+    {
+      icon: Mail,
+      title: t.email,
+      value: 'contact@flogistic.com',
+      href: 'mailto:contact@flogistic.com',
+    },
+    {
+      icon: Phone,
+      title: t.phone,
+      value: '+1 (555) 123-4567',
+      href: 'tel:+15551234567',
+    },
+    {
+      icon: MapPin,
+      title: t.location,
+      value: t.locationValue,
+      href: null,
+    },
+  ];
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -70,13 +74,13 @@ export default function ContactSection() {
           className="text-center mb-16"
         >
           <span className="inline-block px-4 py-2 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-sm mb-6">
-            Get in Touch
+            {t.badge}
           </span>
           <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
-            Ready to Transform Your Enterprise?
+            {t.title}
           </h2>
           <p className="text-slate-400 max-w-2xl mx-auto">
-            Schedule a consultation with our AI experts and discover how we can accelerate your business growth.
+            {t.subtitle}
           </p>
         </motion.div>
         
@@ -126,24 +130,14 @@ export default function ContactSection() {
             
             {/* Additional Info */}
             <div className="p-6 rounded-xl bg-gradient-to-br from-blue-500/10 to-emerald-500/10 border border-blue-500/20">
-              <h3 className="text-white font-semibold mb-2">Why Choose Flogistic?</h3>
+              <h3 className="text-white font-semibold mb-2">{t.whyChoose}</h3>
               <ul className="space-y-2 text-slate-400 text-sm">
-                <li className="flex items-center gap-2">
-                  <CheckCircle className="w-4 h-4 text-emerald-400" />
-                  24/7 Enterprise Support
-                </li>
-                <li className="flex items-center gap-2">
-                  <CheckCircle className="w-4 h-4 text-emerald-400" />
-                  ISO Certified Security
-                </li>
-                <li className="flex items-center gap-2">
-                  <CheckCircle className="w-4 h-4 text-emerald-400" />
-                  Custom Solutions
-                </li>
-                <li className="flex items-center gap-2">
-                  <CheckCircle className="w-4 h-4 text-emerald-400" />
-                  Proven 2.4x ROI
-                </li>
+                {t.benefits.map((benefit, i) => (
+                  <li key={i} className="flex items-center gap-2">
+                    <CheckCircle className="w-4 h-4 text-emerald-400" />
+                    {benefit}
+                  </li>
+                ))}
               </ul>
             </div>
           </motion.div>
@@ -157,20 +151,20 @@ export default function ContactSection() {
           >
             <form onSubmit={handleSubmit} className="bg-slate-800/30 backdrop-blur-sm rounded-2xl border border-slate-700/50 p-8 space-y-6">
               <div className="space-y-2">
-                <Label htmlFor="name" className="text-slate-300">Name</Label>
+                <Label htmlFor="name" className="text-slate-300">{t.form.name}</Label>
                 <Input
                   id="name"
                   name="name"
                   value={formData.name}
                   onChange={handleChange}
                   required
-                  placeholder="Your name"
+                  placeholder={t.form.namePlaceholder}
                   className="bg-slate-900/50 border-slate-700 text-white placeholder:text-slate-500 focus:border-blue-500 focus:ring-blue-500/20"
                 />
               </div>
               
               <div className="space-y-2">
-                <Label htmlFor="email" className="text-slate-300">Email</Label>
+                <Label htmlFor="email" className="text-slate-300">{t.form.email}</Label>
                 <Input
                   id="email"
                   name="email"
@@ -178,32 +172,32 @@ export default function ContactSection() {
                   value={formData.email}
                   onChange={handleChange}
                   required
-                  placeholder="your@email.com"
+                  placeholder={t.form.emailPlaceholder}
                   className="bg-slate-900/50 border-slate-700 text-white placeholder:text-slate-500 focus:border-blue-500 focus:ring-blue-500/20"
                 />
               </div>
               
               <div className="space-y-2">
-                <Label htmlFor="company" className="text-slate-300">Company</Label>
+                <Label htmlFor="company" className="text-slate-300">{t.form.company}</Label>
                 <Input
                   id="company"
                   name="company"
                   value={formData.company}
                   onChange={handleChange}
-                  placeholder="Your company"
+                  placeholder={t.form.companyPlaceholder}
                   className="bg-slate-900/50 border-slate-700 text-white placeholder:text-slate-500 focus:border-blue-500 focus:ring-blue-500/20"
                 />
               </div>
               
               <div className="space-y-2">
-                <Label htmlFor="message" className="text-slate-300">Message</Label>
+                <Label htmlFor="message" className="text-slate-300">{t.form.message}</Label>
                 <Textarea
                   id="message"
                   name="message"
                   value={formData.message}
                   onChange={handleChange}
                   required
-                  placeholder="Tell us about your project..."
+                  placeholder={t.form.messagePlaceholder}
                   rows={4}
                   className="bg-slate-900/50 border-slate-700 text-white placeholder:text-slate-500 focus:border-blue-500 focus:ring-blue-500/20 resize-none"
                 />
@@ -216,18 +210,18 @@ export default function ContactSection() {
               >
                 {isSubmitting ? (
                   <>
-                    <Loader2 className="w-5 h-5 mr-2 animate-spin" />
-                    Sending...
+                    <Loader2 className={`w-5 h-5 ${language === 'ar' ? 'ml-2' : 'mr-2'} animate-spin`} />
+                    {t.form.sending}
                   </>
                 ) : isSubmitted ? (
                   <>
-                    <CheckCircle className="w-5 h-5 mr-2" />
-                    Message Sent!
+                    <CheckCircle className={`w-5 h-5 ${language === 'ar' ? 'ml-2' : 'mr-2'}`} />
+                    {t.form.sent}
                   </>
                 ) : (
                   <>
-                    Request a Consultation
-                    <Send className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
+                    {t.form.submit}
+                    <Send className={`w-5 h-5 ${language === 'ar' ? 'mr-2 group-hover:-translate-x-1' : 'ml-2 group-hover:translate-x-1'} transition-transform`} />
                   </>
                 )}
               </Button>

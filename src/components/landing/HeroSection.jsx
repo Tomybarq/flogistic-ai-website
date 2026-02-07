@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowRight, Sparkles, Shield, Zap, BarChart3, Clock, Award } from 'lucide-react';
 import { Button } from "@/components/ui/button";
+import { LanguageContext } from '@/pages/Home';
+import { translations } from './translations';
 
 const StatItem = ({ value, label, delay }) => (
   <motion.div
@@ -26,6 +28,9 @@ const FeatureBadge = ({ icon: Icon, text, className }) => (
 );
 
 export default function HeroSection() {
+  const { language } = useContext(LanguageContext);
+  const t = translations[language].hero;
+  
   const scrollToSection = (id) => {
     document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
   };
@@ -60,7 +65,7 @@ export default function HeroSection() {
               className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-sm"
             >
               <Sparkles className="w-4 h-4" />
-              <span>Enterprise AI Solutions</span>
+              <span>{t.badge}</span>
             </motion.div>
             
             <motion.h1
@@ -69,9 +74,9 @@ export default function HeroSection() {
               transition={{ duration: 0.6, delay: 0.1 }}
               className="text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight"
             >
-              Transform Your Business with{' '}
+              {t.title}{' '}
               <span className="bg-gradient-to-r from-blue-400 via-blue-500 to-emerald-400 bg-clip-text text-transparent">
-                Enterprise AI
+                {t.titleHighlight}
               </span>
             </motion.h1>
             
@@ -81,7 +86,7 @@ export default function HeroSection() {
               transition={{ duration: 0.6, delay: 0.2 }}
               className="text-lg text-slate-400 max-w-xl leading-relaxed"
             >
-              Empowering enterprises with cutting-edge artificial intelligence and automation solutions that drive growth, efficiency, and innovation.
+              {t.subtitle}
             </motion.p>
             
             <motion.div
@@ -94,15 +99,15 @@ export default function HeroSection() {
                 onClick={() => scrollToSection('contact')}
                 className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-6 text-lg rounded-xl group"
               >
-                Request a Consultation
-                <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                {t.cta}
+                <ArrowRight className={`${language === 'ar' ? 'mr-2 group-hover:-translate-x-1' : 'ml-2 group-hover:translate-x-1'} w-5 h-5 transition-transform`} />
               </Button>
               <Button 
                 variant="outline"
                 onClick={() => scrollToSection('services')}
                 className="border-slate-700 text-slate-300 hover:bg-slate-800 px-8 py-6 text-lg rounded-xl"
               >
-                Learn More
+                {t.learnMore}
               </Button>
             </motion.div>
             
@@ -114,9 +119,9 @@ export default function HeroSection() {
               className="pt-8 border-t border-slate-800"
             >
               <div className="grid grid-cols-3 gap-8">
-                <StatItem value="500+" label="Enterprise Clients" delay={0.5} />
-                <StatItem value="98%" label="Client Satisfaction" delay={0.6} />
-                <StatItem value="2.4x" label="Average ROI" delay={0.7} />
+                <StatItem value="500+" label={t.stats.clients} delay={0.5} />
+                <StatItem value="98%" label={t.stats.satisfaction} delay={0.6} />
+                <StatItem value="2.4x" label={t.stats.roi} delay={0.7} />
               </div>
             </motion.div>
           </div>
@@ -135,29 +140,29 @@ export default function HeroSection() {
                 <motion.div
                   animate={{ y: [0, -5, 0] }}
                   transition={{ duration: 3, repeat: Infinity }}
-                  className="absolute -top-4 -right-4 px-4 py-2 bg-emerald-500 rounded-full text-white text-sm font-medium shadow-lg shadow-emerald-500/25"
+                  className={`absolute -top-4 ${language === 'ar' ? '-left-4' : '-right-4'} px-4 py-2 bg-emerald-500 rounded-full text-white text-sm font-medium shadow-lg shadow-emerald-500/25`}
                 >
                   <div className="flex items-center gap-2">
                     <Clock className="w-4 h-4" />
-                    24/7 Support
+                    {t.support}
                   </div>
                 </motion.div>
                 
                 <div className="text-center space-y-4 mb-8">
                   <div className="text-6xl font-bold bg-gradient-to-r from-blue-400 to-emerald-400 bg-clip-text text-transparent">
-                    AI
+                    {t.ai}
                   </div>
-                  <div className="text-2xl text-white font-medium">Powered</div>
-                  <div className="text-xl text-slate-400">Solutions</div>
+                  <div className="text-2xl text-white font-medium">{t.powered}</div>
+                  <div className="text-xl text-slate-400">{t.solutions}</div>
                 </div>
                 
                 <div className="h-px bg-gradient-to-r from-transparent via-slate-600 to-transparent mb-6" />
                 
                 <div className="space-y-3">
                   {[
-                    { icon: BarChart3, text: 'Real-time Analytics' },
-                    { icon: Zap, text: 'Automated Workflows' },
-                    { icon: Sparkles, text: 'Predictive Intelligence' },
+                    { icon: BarChart3, text: t.features.analytics },
+                    { icon: Zap, text: t.features.workflows },
+                    { icon: Sparkles, text: t.features.intelligence },
                   ].map((item, i) => (
                     <motion.div
                       key={i}
@@ -178,10 +183,10 @@ export default function HeroSection() {
                 <motion.div
                   animate={{ y: [0, -5, 0] }}
                   transition={{ duration: 3, repeat: Infinity, delay: 1.5 }}
-                  className="absolute -bottom-4 -left-4 px-4 py-2 bg-emerald-600 rounded-full text-white text-sm font-medium shadow-lg shadow-emerald-600/25 flex items-center gap-2"
+                  className={`absolute -bottom-4 ${language === 'ar' ? '-right-4' : '-left-4'} px-4 py-2 bg-emerald-600 rounded-full text-white text-sm font-medium shadow-lg shadow-emerald-600/25 flex items-center gap-2`}
                 >
                   <Award className="w-4 h-4" />
-                  ISO Certified
+                  {t.certified}
                 </motion.div>
               </div>
               

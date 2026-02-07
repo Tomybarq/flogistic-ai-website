@@ -1,33 +1,11 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { motion } from 'framer-motion';
 import { Megaphone, TrendingUp, Cog, ArrowRight } from 'lucide-react';
 import { Button } from "@/components/ui/button";
+import { LanguageContext } from '@/pages/Home';
+import { translations } from './translations';
 
-const services = [
-  {
-    icon: Megaphone,
-    title: 'Digital Marketing Services',
-    description: 'AI-driven marketing automation that optimizes campaigns, personalizes customer experiences, and maximizes ROI through intelligent data analysis.',
-    gradient: 'from-blue-500 to-cyan-500',
-    delay: 0.1,
-  },
-  {
-    icon: TrendingUp,
-    title: 'Predictive Analytics',
-    description: 'Leverage machine learning to forecast trends, customer behavior, and market opportunities with unparalleled accuracy.',
-    gradient: 'from-purple-500 to-pink-500',
-    delay: 0.2,
-  },
-  {
-    icon: Cog,
-    title: 'Process Automation',
-    description: 'Streamline operations with intelligent automation solutions that reduce costs and increase productivity across your organization.',
-    gradient: 'from-emerald-500 to-teal-500',
-    delay: 0.3,
-  },
-];
-
-const ServiceCard = ({ service }) => {
+const ServiceCard = ({ service, learnMoreText, isRtl }) => {
   const scrollToContact = () => {
     document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
   };
@@ -58,14 +36,41 @@ const ServiceCard = ({ service }) => {
         onClick={scrollToContact}
         className="text-blue-400 hover:text-blue-300 hover:bg-blue-500/10 p-0 h-auto group/btn"
       >
-        Learn More
-        <ArrowRight className="ml-2 w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
+        {learnMoreText}
+        <ArrowRight className={`${isRtl ? 'mr-2 group-hover/btn:-translate-x-1' : 'ml-2 group-hover/btn:translate-x-1'} w-4 h-4 transition-transform`} />
       </Button>
     </motion.div>
   );
 };
 
 export default function ServicesSection() {
+  const { language } = useContext(LanguageContext);
+  const t = translations[language].services;
+  
+  const services = [
+    {
+      icon: Megaphone,
+      title: t.items[0].title,
+      description: t.items[0].description,
+      gradient: 'from-blue-500 to-cyan-500',
+      delay: 0.1,
+    },
+    {
+      icon: TrendingUp,
+      title: t.items[1].title,
+      description: t.items[1].description,
+      gradient: 'from-purple-500 to-pink-500',
+      delay: 0.2,
+    },
+    {
+      icon: Cog,
+      title: t.items[2].title,
+      description: t.items[2].description,
+      gradient: 'from-emerald-500 to-teal-500',
+      delay: 0.3,
+    },
+  ];
+  
   return (
     <section id="services" className="py-24 bg-gradient-to-b from-[#0a0f1c] to-[#0d1424] relative">
       <div className="absolute inset-0 bg-[linear-gradient(rgba(59,130,246,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(59,130,246,0.02)_1px,transparent_1px)] bg-[size:64px_64px]" />
@@ -79,19 +84,19 @@ export default function ServicesSection() {
           className="text-center mb-16"
         >
           <span className="inline-block px-4 py-2 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-sm mb-6">
-            Our Solutions
+            {t.badge}
           </span>
           <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
-            Comprehensive AI-Powered Services
+            {t.title}
           </h2>
           <p className="text-slate-400 max-w-2xl mx-auto">
-            Tailored enterprise solutions designed to accelerate your digital transformation and drive measurable business outcomes.
+            {t.subtitle}
           </p>
         </motion.div>
         
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           {services.map((service, index) => (
-            <ServiceCard key={index} service={service} />
+            <ServiceCard key={index} service={service} learnMoreText={t.learnMore} isRtl={language === 'ar'} />
           ))}
         </div>
       </div>

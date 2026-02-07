@@ -1,14 +1,9 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { motion } from 'framer-motion';
 import { Linkedin, Twitter, Facebook, Instagram, ArrowUp } from 'lucide-react';
 import { Button } from "@/components/ui/button";
-
-const footerLinks = {
-  Solutions: ['Digital Marketing', 'Predictive Analytics', 'Process Automation', 'Custom AI'],
-  Company: ['About Us', 'Careers', 'Press', 'Partners'],
-  Resources: ['Blog', 'Case Studies', 'Documentation', 'API'],
-  Legal: ['Privacy Policy', 'Terms of Service', 'Cookie Policy', 'GDPR'],
-};
+import { LanguageContext } from '@/pages/Home';
+import { translations } from './translations';
 
 const socialLinks = [
   { icon: Linkedin, href: '#' },
@@ -18,6 +13,15 @@ const socialLinks = [
 ];
 
 export default function Footer() {
+  const { language } = useContext(LanguageContext);
+  const t = translations[language].footer;
+  
+  const footerLinks = {
+    [t.solutions]: ['Digital Marketing', 'Predictive Analytics', 'Process Automation', 'Custom AI'],
+    [t.company]: ['About Us', 'Careers', 'Press', 'Partners'],
+    [t.resources]: ['Blog', 'Case Studies', 'Documentation', 'API'],
+    [t.legal]: ['Privacy Policy', 'Terms of Service', 'Cookie Policy', 'GDPR'],
+  };
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -36,7 +40,7 @@ export default function Footer() {
               />
             </div>
             <p className="text-slate-400 text-sm mb-6 max-w-xs">
-              Empowering enterprises with cutting-edge AI solutions for sustainable growth and innovation.
+              {t.description}
             </p>
             <div className="flex gap-3">
               {socialLinks.map((social, index) => (
@@ -71,7 +75,7 @@ export default function Footer() {
         {/* Bottom Bar */}
         <div className="flex flex-col md:flex-row items-center justify-between pt-8 border-t border-slate-800 gap-4">
           <p className="text-slate-500 text-sm">
-            © 2026 Flogistic Solutions. All rights reserved.
+            {t.copyright}
           </p>
           <Button
             variant="ghost"

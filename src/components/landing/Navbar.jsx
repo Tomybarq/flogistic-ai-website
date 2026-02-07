@@ -1,16 +1,20 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X, Globe } from 'lucide-react';
 import { Button } from "@/components/ui/button";
-
-const navLinks = [
-  { name: 'Home', href: '#home' },
-  { name: 'Services', href: '#services' },
-  { name: 'Testimonials', href: '#testimonials' },
-  { name: 'Contact', href: '#contact' },
-];
+import { LanguageContext } from '@/pages/Home';
+import { translations } from './translations';
 
 export default function Navbar() {
+  const { language, toggleLanguage } = useContext(LanguageContext);
+  const t = translations[language].nav;
+  
+  const navLinks = [
+    { name: t.home, href: '#home' },
+    { name: t.services, href: '#services' },
+    { name: t.testimonials, href: '#testimonials' },
+    { name: t.contact, href: '#contact' },
+  ];
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -72,16 +76,17 @@ export default function Navbar() {
               <Button
                 variant="ghost"
                 size="sm"
+                onClick={toggleLanguage}
                 className="text-slate-300 hover:text-white hover:bg-slate-800"
               >
                 <Globe className="w-4 h-4 mr-2" />
-                العربية
+                {language === 'en' ? 'العربية' : 'English'}
               </Button>
               <Button
                 onClick={() => scrollToSection('#contact')}
                 className="bg-blue-600 hover:bg-blue-700 text-white"
               >
-                Get Started
+                {t.getStarted}
               </Button>
             </div>
             
@@ -122,7 +127,7 @@ export default function Navbar() {
                 onClick={() => scrollToSection('#contact')}
                 className="mt-6 bg-blue-600 hover:bg-blue-700 text-white py-6 text-lg"
               >
-                Get Started
+                {t.getStarted}
               </Button>
             </div>
           </motion.div>
