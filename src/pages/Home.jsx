@@ -5,6 +5,7 @@ import ServicesSection from '@/components/landing/ServicesSection';
 import TestimonialsSection from '@/components/landing/TestimonialsSection';
 import ContactSection from '@/components/landing/ContactSection';
 import Footer from '@/components/landing/Footer';
+import Chatbot from '@/components/landing/Chatbot';
 
 export const LanguageContext = createContext();
 
@@ -24,6 +25,7 @@ export default function Home() {
         <TestimonialsSection />
         <ContactSection />
         <Footer />
+        <Chatbot />
       </div>
     </LanguageContext.Provider>
   );

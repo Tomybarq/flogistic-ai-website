@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { motion } from 'framer-motion';
-import { Linkedin, Twitter, Facebook, Instagram, ArrowUp } from 'lucide-react';
+import { Linkedin, Twitter, Facebook, Instagram, ArrowUp, Globe } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { LanguageContext } from '@/pages/Home';
 import { translations } from './translations';
@@ -22,6 +22,8 @@ export default function Footer() {
     [t.resources]: ['Blog', 'Case Studies', 'Documentation', 'API'],
     [t.legal]: ['Privacy Policy', 'Terms of Service', 'Cookie Policy', 'GDPR'],
   };
+  const { toggleLanguage } = useContext(LanguageContext);
+
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -77,14 +79,25 @@ export default function Footer() {
           <p className="text-slate-500 text-sm">
             {t.copyright}
           </p>
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={scrollToTop}
-            className="text-slate-400 hover:text-white hover:bg-slate-800 rounded-full"
-          >
-            <ArrowUp className="w-5 h-5" />
-          </Button>
+          <div className="flex items-center gap-2">
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={toggleLanguage}
+              className="text-slate-400 hover:text-white hover:bg-slate-800"
+            >
+              <Globe className="w-4 h-4 mr-2" />
+              {language === 'en' ? 'العربية' : 'English'}
+            </Button>
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={scrollToTop}
+              className="text-slate-400 hover:text-white hover:bg-slate-800 rounded-full"
+            >
+              <ArrowUp className="w-5 h-5" />
+            </Button>
+          </div>
         </div>
       </div>
     </footer>
