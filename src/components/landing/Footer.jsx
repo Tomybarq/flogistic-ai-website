@@ -6,7 +6,7 @@ import { LanguageContext } from '@/pages/Home';
 import { translations } from './translations';
 
 const socialLinks = [
-  { icon: Linkedin, href: '#' },
+  { icon: Linkedin, href: 'https://www.linkedin.com/company/flogistic-ai/' },
   { icon: Twitter, href: '#' },
   { icon: Facebook, href: '#' },
   { icon: Instagram, href: '#' },
