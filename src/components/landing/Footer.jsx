@@ -19,7 +19,7 @@ export default function Footer() {
   const footerLinks = {
     [t.solutions]: ['Digital Marketing', 'Predictive Analytics', 'Process Automation', 'Custom AI'],
     [t.company]: ['About Us', 'Careers', 'Press', 'Partners'],
-    [t.resources]: ['Blog', 'Case Studies', 'Documentation', 'API'],
+    [t.resources]: [{ label: 'Blog', href: 'https://digital-flogistic.blogspot.com' }, 'Case Studies', 'Documentation', 'API'],
     [t.legal]: ['Privacy Policy', 'Terms of Service', 'Cookie Policy', 'GDPR'],
   };
   const { toggleLanguage } = useContext(LanguageContext);
@@ -63,9 +63,14 @@ export default function Footer() {
               <h4 className="text-white font-semibold mb-4">{title}</h4>
               <ul className="space-y-3">
                 {links.map((link) => (
-                  <li key={link}>
-                    <a href="#" className="text-slate-400 hover:text-white text-sm transition-colors">
-                      {link}
+                  <li key={typeof link === 'string' ? link : link.label}>
+                    <a
+                      href={typeof link === 'string' ? '#' : link.href}
+                      target={typeof link === 'object' ? '_blank' : undefined}
+                      rel={typeof link === 'object' ? 'noopener noreferrer' : undefined}
+                      className="text-slate-400 hover:text-white text-sm transition-colors"
+                    >
+                      {typeof link === 'string' ? link : link.label}
                     </a>
                   </li>
                 ))}
