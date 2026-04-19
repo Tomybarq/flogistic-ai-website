@@ -8,7 +8,7 @@ import { translations } from './translations';
 const socialLinks = [
   { icon: Linkedin, href: 'https://www.linkedin.com/company/flogistic-ai/' },
   { icon: Twitter, href: '#' },
-  { icon: Facebook, href: '#' },
+  { icon: Facebook, href: 'https://www.facebook.com/share/1CxWjm1XcN/' },
   { icon: Instagram, href: '#' },
 ];
 
