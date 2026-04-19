@@ -22,8 +22,8 @@ export default function ContactSection() {
     {
       icon: Phone,
       title: t.phone,
-      value: '+1 (555) 123-4567',
-      href: 'tel:+15551234567',
+      value: '+967 738 866 236',
+      href: 'https://wa.me/967738866236',
     },
     {
       icon: MapPin,

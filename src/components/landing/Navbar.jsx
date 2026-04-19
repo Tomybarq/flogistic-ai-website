@@ -54,7 +54,7 @@ export default function Navbar() {
               <img 
                 src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/698693974567338469dd516f/538a6a95a_Logo.png" 
                 alt="Flogistic Solutions Co"
-                className="h-12 w-auto"
+                className="h-16 w-auto"
               />
             </button>
             
