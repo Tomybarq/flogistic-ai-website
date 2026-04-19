@@ -7,6 +7,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { LanguageContext } from '@/pages/Home';
 import { translations } from './translations';
+import { base44 } from '@/api/base44Client';
 
 export default function ContactSection() {
   const { language } = useContext(LanguageContext);
@@ -16,8 +17,8 @@ export default function ContactSection() {
     {
       icon: Mail,
       title: t.email,
-      value: 'contact@flogistic.com',
-      href: 'mailto:contact@flogistic.com',
+      value: 'digitalflogistic@gmail.com',
+      href: 'mailto:digitalflogistic@gmail.com',
     },
     {
       icon: Phone,
@@ -49,8 +50,11 @@ export default function ContactSection() {
     e.preventDefault();
     setIsSubmitting(true);
     
-    // Simulate submission
-    await new Promise(resolve => setTimeout(resolve, 1500));
+    await base44.integrations.Core.SendEmail({
+      to: 'digitalflogistic@gmail.com',
+      subject: `New Contact Form Message from ${formData.name} (${formData.company || 'No company'})`,
+      body: `Name: ${formData.name}\nEmail: ${formData.email}\nCompany: ${formData.company || 'N/A'}\n\nMessage:\n${formData.message}`,
+    });
     
     setIsSubmitting(false);
     setIsSubmitted(true);
