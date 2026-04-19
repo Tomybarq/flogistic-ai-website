@@ -9,7 +9,7 @@ const socialLinks = [
   { icon: Linkedin, href: 'https://www.linkedin.com/company/flogistic-ai/' },
   { icon: Twitter, href: '#' },
   { icon: Facebook, href: 'https://www.facebook.com/share/1CxWjm1XcN/' },
-  { icon: Instagram, href: '#' },
+  { icon: Instagram, href: 'https://www.instagram.com/flogistic_ai?igsh=MWZxazVuOTB6ZnVucw==' },
 ];
 
 export default function Footer() {
