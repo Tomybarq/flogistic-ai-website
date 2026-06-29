@@ -2,12 +2,12 @@ import React, { useState, useRef, useCallback, useEffect } from 'react';
 import { Plus, Link2, MousePointer2, Trash2, RotateCcw, X, Save } from 'lucide-react';
 
 const STAGE_COLORS = [
-  { bar: '#3b82f6', glow: 'rgba(59,130,246,0.25)' },
-  { bar: '#8b5cf6', glow: 'rgba(139,92,246,0.25)' },
-  { bar: '#ec4899', glow: 'rgba(236,72,153,0.25)' },
-  { bar: '#f59e0b', glow: 'rgba(245,158,11,0.25)' },
-  { bar: '#10b981', glow: 'rgba(16,185,129,0.25)' },
-  { bar: '#06b6d4', glow: 'rgba(6,182,212,0.25)' },
+  { bar: '#002D62', glow: 'rgba(0,45,98,0.45)' },
+  { bar: '#0055B8', glow: 'rgba(0,85,184,0.45)' },
+  { bar: '#007BFF', glow: 'rgba(0,123,255,0.45)' },
+  { bar: '#3DA9F5', glow: 'rgba(61,169,245,0.45)' },
+  { bar: '#0088CC', glow: 'rgba(0,136,204,0.45)' },
+  { bar: '#005A9C', glow: 'rgba(0,90,156,0.45)' },
 ];
 
 const NODE_W = 200;
@@ -156,16 +156,30 @@ export default function CustomerJourney() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col">
+    <div className="min-h-screen bg-[#05080F] text-slate-100 flex flex-col">
       {/* Header */}
-      <header className="border-b border-white/10 bg-slate-900/60 backdrop-blur px-6 py-4 flex items-center justify-between flex-wrap gap-3">
-        <div>
-          <h1 className="text-xl font-semibold tracking-tight">客户旅程流程图</h1>
-          <p className="text-xs text-slate-400 mt-0.5">
-            {mode === 'connect' && (connectFrom ? '选择目标阶段以建立连接' : '选择起始阶段')}
-            {mode === 'select' && '拖拽阶段以重新排列 · 双击编辑内容'}
-            {mode === 'delete' && '点击阶段或连线以删除'}
-          </p>
+      <header className="border-b border-white/10 bg-[#0a1428]/80 backdrop-blur px-6 py-4 flex items-center justify-between flex-wrap gap-3">
+        <div className="flex items-center gap-3">
+          <img
+            src="https://media.base44.com/images/public/698693974567338469dd516f/08d8140a7_Logo.png"
+            alt="Flogistic Solutions Co."
+            className="w-12 h-12 object-contain drop-shadow-[0_2px_10px_rgba(0,123,255,0.35)]"
+          />
+          <div className="flex flex-col">
+            <div className="flex items-baseline gap-2.5">
+              <span className="font-serif-display text-2xl font-bold text-metallic leading-none">Flogistic</span>
+              <span className="text-[10px] font-sans tracking-[0.35em] text-[#3DA9F5] uppercase font-medium">Solutions Co</span>
+            </div>
+            <div className="flex items-center gap-2 mt-1">
+              <h1 className="text-sm text-slate-200 tracking-wide">客户旅程流程图</h1>
+              <span className="text-slate-600">·</span>
+              <p className="text-xs text-slate-400">
+                {mode === 'connect' && (connectFrom ? '选择目标阶段以建立连接' : '选择起始阶段')}
+                {mode === 'select' && '拖拽阶段以重新排列 · 双击编辑内容'}
+                {mode === 'delete' && '点击阶段或连线以删除'}
+              </p>
+            </div>
+          </div>
         </div>
         <div className="flex items-center gap-2 flex-wrap">
           {modeBtn('select', MousePointer2, '选择')}
@@ -195,7 +209,7 @@ export default function CustomerJourney() {
         className="relative flex-1 overflow-auto"
         style={{
           backgroundImage:
-            'radial-gradient(circle, rgba(255,255,255,0.06) 1px, transparent 1px)',
+            'radial-gradient(circle, rgba(61,169,245,0.08) 1px, transparent 1px)',
           backgroundSize: '24px 24px',
         }}
       >
@@ -212,7 +226,7 @@ export default function CustomerJourney() {
                 markerHeight="7"
                 orient="auto-start-reverse"
               >
-                <path d="M 0 0 L 10 5 L 0 10 z" fill="#64748b" />
+                <path d="M 0 0 L 10 5 L 0 10 z" fill="#A0A9B5" />
               </marker>
               <marker
                 id="arrow-active"
@@ -236,7 +250,7 @@ export default function CustomerJourney() {
                   <path
                     d={pathFor(from, to)}
                     fill="none"
-                    stroke={isHover ? '#818cf8' : '#64748b'}
+                    stroke={isHover ? '#3DA9F5' : '#A0A9B5'}
                     strokeWidth={isHover ? 3 : 2}
                     strokeDasharray={isHover ? '6 4' : 'none'}
                     markerEnd={`url(#${isHover ? 'arrow-active' : 'arrow'})`}
@@ -275,8 +289,8 @@ export default function CustomerJourney() {
                   top: node.y,
                   width: NODE_W,
                   height: NODE_H,
-                  background: 'rgba(15,23,42,0.95)',
-                  borderColor: 'rgba(255,255,255,0.12)',
+                  background: 'linear-gradient(160deg, rgba(10,20,40,0.95) 0%, rgba(5,8,15,0.98) 100%)',
+                  borderColor: 'rgba(61,169,245,0.18)',
                   boxShadow: `0 8px 24px ${color.glow}, 0 2px 8px rgba(0,0,0,0.4)`,
                 }}
               >
@@ -336,7 +350,7 @@ export default function CustomerJourney() {
       </div>
 
       {/* Footer hint */}
-      <footer className="border-t border-white/10 bg-slate-900/60 px-6 py-2.5 text-xs text-slate-500 flex items-center justify-between">
+      <footer className="border-t border-white/10 bg-[#0a1428]/80 px-6 py-2.5 text-xs text-slate-500 flex items-center justify-between">
         <span>阶段: {nodes.length} · 连接: {connections.length}</span>
         <span>双击阶段编辑 · 选择「连接」模式建立关系</span>
       </footer>
