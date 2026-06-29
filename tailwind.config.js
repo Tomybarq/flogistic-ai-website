@@ -4,6 +4,11 @@ module.exports = {
     content: ["./index.html", "./src/**/*.{ts,tsx,js,jsx}"],
   theme: {
   	extend: {
+  		fontFamily: {
+  			heading: ['Cairo', 'Tajawal', 'system-ui', 'sans-serif'],
+  			body: ['Noto Sans Arabic', 'system-ui', 'sans-serif'],
+  			sans: ['Noto Sans Arabic', 'system-ui', 'sans-serif'],
+  		},
   		borderRadius: {
   			lg: 'var(--radius)',
   			md: 'calc(var(--radius) - 2px)',

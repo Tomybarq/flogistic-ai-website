@@ -1,4 +1,5 @@
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Inter:wght@300;400;500;600;700&display=swap');
+/* Premium Arabic–English font system — Cairo (headings) + Noto Sans Arabic (body). display=swap enables font-display: swap. */
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&family=Noto+Sans+Arabic:wght@300;400;500;600;700&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -30,6 +31,9 @@
     --chart-4: 43 74% 66%;
     --chart-5: 27 87% 67%;
     --radius: 0.5rem;
+    /* Reusable typography tokens — headings: Cairo, body/UI: Noto Sans Arabic */
+    --font-heading: 'Cairo', 'Tajawal', system-ui, sans-serif;
+    --font-body: 'Noto Sans Arabic', system-ui, sans-serif;
     --sidebar-background: 0 0% 98%;
     --sidebar-foreground: 240 5.3% 26.1%;
     --sidebar-primary: 240 5.9% 10%;
@@ -85,11 +89,17 @@
 
   body {
     @apply bg-background text-foreground;
+    font-family: var(--font-body);
+  }
+
+  /* Headings default to Cairo for consistent bilingual rendering */
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading);
   }
 }
 
 @layer components {
-  .font-serif-display { font-family: 'Playfair Display', Georgia, serif; }
+  .font-serif-display { font-family: var(--font-heading); }
   .text-metallic {
     background: linear-gradient(180deg, #E8EBF0 0%, #A0A9B5 48%, #D1D6DE 100%);
     -webkit-background-clip: text;
