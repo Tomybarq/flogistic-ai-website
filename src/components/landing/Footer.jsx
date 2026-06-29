@@ -1,13 +1,12 @@
 import React, { useContext } from 'react';
 import { motion } from 'framer-motion';
-import { Linkedin, Twitter, Facebook, Instagram, ArrowUp, Globe } from 'lucide-react';
+import { Linkedin, Facebook, Instagram, ArrowUp, Globe } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { LanguageContext } from '@/pages/Home';
 import { translations } from './translations';
 
 const socialLinks = [
   { icon: Linkedin, href: 'https://www.linkedin.com/company/flogistic-ai/' },
-  { icon: Twitter, href: '#' },
   { icon: Facebook, href: 'https://www.facebook.com/share/1CxWjm1XcN/' },
   { icon: Instagram, href: 'https://www.instagram.com/flogistic_ai?igsh=MWZxazVuOTB6ZnVucw==' },
 ];
