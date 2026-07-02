@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export default function Footer() {
   return (
     <footer className="relative border-t border-dark-300/20 py-12">
@@ -12,13 +14,21 @@ export default function Footer() {
             </span>
           </div>
           <div className="flex items-center gap-6 text-sm text-dark-300">
-            <span>Digital Services</span>
+            <Link href="/portfolio" className="hover:text-flogistic-400 transition-colors">
+              Portfolio
+            </Link>
             <span className="w-1 h-1 rounded-full bg-dark-300/40" />
-            <span>App Development</span>
+            <Link href="/services/app-development" className="hover:text-flogistic-400 transition-colors">
+              App Development
+            </Link>
             <span className="w-1 h-1 rounded-full bg-dark-300/40" />
-            <span>SaaS B2B</span>
+            <Link href="/services/saas-platforms" className="hover:text-flogistic-400 transition-colors">
+              SaaS B2B
+            </Link>
             <span className="w-1 h-1 rounded-full bg-dark-300/40" />
-            <span>Automation</span>
+            <Link href="/services/automation" className="hover:text-flogistic-400 transition-colors">
+              Automation
+            </Link>
           </div>
         </div>
       </div>
