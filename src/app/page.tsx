@@ -3,6 +3,7 @@ import Hero from "@/components/Hero";
 import Services from "@/components/Services";
 import Process from "@/components/Process";
 import CTA from "@/components/CTA";
+import ColorPaletteVerification from "@/components/ui/ColorPaletteVerification";
 import Footer from "@/components/Footer";
 
 export default function Home() {
@@ -16,6 +17,8 @@ export default function Home() {
       <Process />
       <div className="glow-line" />
       <CTA />
+      <div className="glow-line" />
+      <ColorPaletteVerification />
       <Footer />
     </main>
   );
