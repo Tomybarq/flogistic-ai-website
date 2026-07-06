@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { Menu, X } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
@@ -32,9 +33,14 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 lg:h-20">
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-2 group">
-            <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-flogistic-500 to-flogistic-700 flex items-center justify-center">
-              <span className="text-white font-bold text-sm">F</span>
+          <Link href="/" className="flex items-center gap-3 group">
+            <div className="w-9 h-9 relative flex items-center justify-center">
+              <Image
+                src="/logo.png"
+                alt="Flogistic Logo"
+                fill
+                className="object-contain select-none"
+              />
             </div>
             <span className="font-semibold text-lg text-dark-50 group-hover:text-white transition-colors">
               Flogistic <span className="text-flogistic-400">Solutions</span>
