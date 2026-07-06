@@ -1,4 +1,5 @@
 import { ArrowRight, Zap } from "lucide-react";
+import HeroMarquee from "./ui/HeroMarquee";
 
 export default function Hero() {
   const stats = [
@@ -27,12 +28,15 @@ export default function Hero() {
             Digital Transformation Partner
           </div>
 
-          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-tight mb-6 animate-slide-up">
-            We Build{" "}
-            <span className="text-gradient">Digital Solutions</span>
-            <br />
-            That Drive Real Impact
+          {/* العنوان الدلالي الموجه لمحركات البحث والـ SEO بدون التأثير على المظهر البصري */}
+          <h1 className="sr-only">
+            We Build Digital Solutions That Drive Real Impact
           </h1>
+
+          {/* شريط النصوص المتعاكس واللانهائي البديل بصرياً */}
+          <div className="w-full my-10 md:my-14 overflow-visible">
+            <HeroMarquee />
+          </div>
 
           <p className="text-dark-100 text-lg sm:text-xl max-w-2xl mx-auto mb-10 animate-slide-up" style={{ animationDelay: "0.2s" }}>
             From custom apps and SaaS platforms to intelligent automation —

@@ -41,3 +41,38 @@ html {
   background: rgba(92, 124, 250, 0.3);
   color: #fff;
 }
+
+/* إعدادات حركة الشريط اللانهائي المتعاكس */
+@keyframes flogisticScrollLeft {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes flogisticScrollRight {
+  0% {
+    transform: translateX(-50%);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+/* فئات التحريك المخصصة */
+.animate-flogistic-left {
+  animation: flogisticScrollLeft 20s linear infinite;
+}
+
+.animate-flogistic-right {
+  animation: flogisticScrollRight 18s linear infinite;
+}
+
+/* فئة تفريغ النص (Text Stroke) المقتبسة من التصميم الهيكلي */
+.text-stroke-flogistic {
+  -webkit-text-stroke: 1.5px rgba(240, 235, 224, 0.35);
+  color: transparent;
+}
+
