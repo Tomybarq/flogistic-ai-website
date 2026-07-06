@@ -1,5 +1,6 @@
 import { ArrowRight, Zap } from "lucide-react";
 import HeroMarquee from "./ui/HeroMarquee";
+import SquircleButton from "./ui/SquircleButton";
 
 export default function Hero() {
   const stats = [
@@ -44,20 +45,14 @@ export default function Hero() {
             production-ready technology.
           </p>
 
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 animate-slide-up" style={{ animationDelay: "0.3s" }}>
-            <a
-              href="#services"
-              className="group bg-flogistic-600 hover:bg-flogistic-500 text-white px-8 py-3.5 rounded-full text-base font-semibold transition-all hover:shadow-xl hover:shadow-flogistic-600/30 inline-flex items-center gap-2"
-            >
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-6 animate-slide-up" style={{ animationDelay: "0.3s" }}>
+            <SquircleButton href="/#services" className="inline-flex items-center gap-2">
               Explore Services
               <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
-            </a>
-            <a
-              href="#contact"
-              className="border border-dark-300/40 hover:border-flogistic-500/50 text-dark-50 hover:text-flogistic-400 px-8 py-3.5 rounded-full text-base font-semibold transition-all"
-            >
+            </SquircleButton>
+            <SquircleButton href="/#contact">
               Get in Touch
-            </a>
+            </SquircleButton>
           </div>
 
           {/* Stats */}
