@@ -3,33 +3,87 @@
 @tailwind utilities;
 
 :root {
-  --foreground: #e8e8ec;
-  --background: #0a0a0f;
+  /* --- Primary Scale (Electric Logistics Blue) --- */
+  --primary-50: #ebf5ff; --primary-100: #e1f0ff; --primary-200: #b8dbff;
+  --primary-300: #7ab8ff; --primary-400: #3393ff; --primary-500: #0066ff;
+  --primary-600: #0052cc; --primary-700: #003e99; --primary-800: #002b66; --primary-900: #001733;
+
+  /* --- Secondary Scale (Chrome Platinum Silver) --- */
+  --secondary-50: #f8fafc; --secondary-100: #f1f5f9; --secondary-200: #e2e8f0;
+  --secondary-300: #cbd5e1; --secondary-400: #94a3b8; --secondary-500: #64748b;
+  --secondary-600: #475569; --secondary-700: #334155; --secondary-800: #1e293b; --secondary-900: #0f172a;
+
+  /* --- Accent (Cyber Cyan) --- */
+  --accent: #00f5ff;
+
+  /* --- Semantic Colors --- */
+  --success: #10b981; --warning: #f59e0b; --error: #ef4444; --info: #3b82f6;
+
+  /* --- Dark-Theme Semantic Tokens (Default) --- */
+  --background: #040814;
+  --surface: #0b1329;
+  --card: #0e1b38;
+  --elevated: #16254a;
+  --border: rgba(226, 232, 240, 0.08);
+  --divider: rgba(0, 102, 255, 0.15);
+  --text-primary: #f8fafc;
+  --text-secondary: #cbd5e1;
+  --text-muted: #64748b;
+  --link: var(--primary-400);
+  --glass-bg: rgba(11, 19, 41, 0.7);
+  --glass-border: rgba(255, 255, 255, 0.05);
+}
+
+[data-theme="light"] {
+  /* --- Light-Theme Semantic Tokens --- */
+  --background: #f8fafc;
+  --surface: #ffffff;
+  --card: #ffffff;
+  --elevated: #f1f5f9;
+  --border: #e2e8f0;
+  --divider: #cbd5e1;
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --text-muted: #94a3b8;
+  --link: var(--primary-600);
+  --glass-bg: rgba(255, 255, 255, 0.8);
+  --glass-border: rgba(0, 62, 153, 0.08);
 }
 
 body {
-  color: var(--foreground);
-  background: var(--background);
+  color: var(--text-primary);
+  background-color: var(--background);
 }
 
 @layer base {
   * {
-    @apply border-dark-300;
+    border-color: var(--border);
   }
   body {
-    @apply bg-dark-900 text-dark-50 antialiased;
+    @apply antialiased;
+    background-color: var(--background);
+    color: var(--text-primary);
   }
 }
 
 @layer utilities {
   .text-gradient {
-    @apply bg-clip-text text-transparent bg-gradient-to-r from-flogistic-400 to-flogistic-600;
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    background-image: linear-gradient(to right, var(--primary-400), var(--primary-600));
   }
   .glass-card {
-    @apply bg-dark-600/40 backdrop-blur-xl border border-dark-300/30 rounded-2xl;
+    background-color: var(--glass-bg);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border: 1px solid var(--glass-border);
+    border-radius: 1rem;
   }
   .glow-line {
-    @apply h-px w-full bg-gradient-to-r from-transparent via-flogistic-500/50 to-transparent;
+    height: 1px;
+    width: 100%;
+    background: linear-gradient(to right, transparent, var(--divider), transparent);
   }
 }
 
