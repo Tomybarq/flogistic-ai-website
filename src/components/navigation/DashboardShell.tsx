@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import CommandPalette from "./CommandPalette";
 import {
   LayoutDashboard,
   GraduationCap,
@@ -161,6 +162,8 @@ export default function DashboardShell({ children }: DashboardShellProps) {
           </div>
 
           <div className="flex items-center space-x-4">
+            <CommandPalette />
+            <div className="w-px h-6 bg-[rgba(255,255,255,0.1)] hidden md:block" />
             <button className="relative p-1.5 text-slate-400 hover:text-white rounded-lg hover:bg-[rgba(255,255,255,0.03)] transition-colors">
               <Bell className="w-5 h-5" />
               <span className="absolute top-1 right-1 w-2 h-2 rounded-full bg-[#00f5ff] ring-2 ring-[#040814]" />
