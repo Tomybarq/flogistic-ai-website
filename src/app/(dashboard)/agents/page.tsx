@@ -8,10 +8,13 @@ import {
   Plus,
   Settings,
   MessageSquare,
-  Sparkles,
   Send,
   Loader2,
-  Trash2
+  Trash2,
+  History,
+  CornerUpLeft,
+  Calendar,
+  User
 } from "lucide-react";
 
 export default function AgentFactoryPage() {
@@ -25,6 +28,29 @@ export default function AgentFactoryPage() {
   const [modelName, setModelName] = useState("gemini-1.5-pro");
   const [temperature, setTemperature] = useState(0.2);
   const [memoryType, setMemoryType] = useState<"buffer" | "vector" | "none">("buffer");
+
+  // Version History state
+  const [showHistory, setShowHistory] = useState(false);
+  const mockVersions = [
+    {
+      version: 3,
+      author: "John Doe",
+      date: "10 mins ago",
+      text: "You are a lead enrichment and scoring assistant. Inspect the incoming customer metadata, evaluate its alignment with our ICP (Enterprise SaaS companies with >50 employees), and output a score from 1-100."
+    },
+    {
+      version: 2,
+      author: "Sarah Jenkins",
+      date: "2 hours ago",
+      text: "ICP Lead scoring assistant. Qualify customer records against enterprise targets (>100 seats, tech vertical) and output grade (A/B/C)."
+    },
+    {
+      version: 1,
+      author: "Alex Rivera",
+      date: "Yesterday",
+      text: "Standard lead triager. Review companies and sort them."
+    }
+  ];
 
   // Chat sandbox state
   const [chatMessage, setChatMessage] = useState("");
@@ -102,6 +128,17 @@ export default function AgentFactoryPage() {
     if (selectedAgent?.id === id) {
       setSelectedAgent(updated[0] || null);
     }
+  };
+
+  const restorePromptVersion = (text: string) => {
+    if (!selectedAgent) return;
+    const updatedAgent = { ...selectedAgent, systemPrompt: text };
+    setAgents(agents.map(a => a.id === selectedAgent.id ? updatedAgent : a));
+    setSelectedAgent(updatedAgent);
+    setChatHistory(prev => [
+      ...prev,
+      { sender: "agent", text: "[System: Reverted system instructions to restored historical version]" }
+    ]);
   };
 
   return (
@@ -236,52 +273,107 @@ export default function AgentFactoryPage() {
         {/* Center / Right - Configuration Editor and Live Chat Testing */}
         <div className="lg:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-8 items-stretch">
           {/* Agent Parameters Spec */}
-          <div className="glass-card bg-[rgba(11,19,41,0.4)] border border-[rgba(255,255,255,0.06)] p-6 flex flex-col justify-between">
-            <div className="space-y-6">
-              <h2 className="text-sm font-semibold text-white tracking-wide uppercase flex items-center gap-1.5">
-                <Settings className="w-4 h-4 text-slate-400" />
-                Parameters
-              </h2>
+          <div className="glass-card bg-[rgba(11,19,41,0.4)] border border-[rgba(255,255,255,0.06)] p-6 flex flex-col justify-between overflow-hidden">
+            <div className="space-y-6 flex-1 overflow-y-auto">
+              <div className="flex items-center justify-between">
+                <h2 className="text-sm font-semibold text-white tracking-wide uppercase flex items-center gap-1.5">
+                  <Settings className="w-4 h-4 text-slate-400" />
+                  Parameters
+                </h2>
+                
+                {selectedAgent && (
+                  <button
+                    onClick={() => setShowHistory(!showHistory)}
+                    className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-[10px] font-bold tracking-wider uppercase border transition-all ${
+                      showHistory
+                        ? "bg-[#0066ff]/20 text-[#00f5ff] border-[#0066ff]/40"
+                        : "bg-[rgba(255,255,255,0.02)] text-slate-400 border-[rgba(255,255,255,0.06)] hover:text-white"
+                    }`}
+                  >
+                    <History className="w-3.5 h-3.5" />
+                    History
+                  </button>
+                )}
+              </div>
 
               {selectedAgent ? (
-                <div className="space-y-4">
-                  <div className="p-4 rounded-xl bg-[#040814]/50 border border-[rgba(255,255,255,0.04)] space-y-1">
-                    <span className="text-[9px] font-semibold text-slate-500 uppercase">Agent ID</span>
-                    <p className="text-xs font-mono text-slate-300">{selectedAgent.id}</p>
-                  </div>
-
-                  <div className="space-y-1">
-                    <span className="text-[10px] font-bold text-slate-400 uppercase">Model Target</span>
-                    <p className="text-xs text-white capitalize font-semibold">{selectedAgent.modelProvider} / {selectedAgent.modelName}</p>
-                  </div>
-
-                  <div className="space-y-2">
-                    <div className="flex items-center justify-between text-[10px] font-bold text-slate-400 uppercase">
-                      <span>Temperature</span>
-                      <span className="text-[#00f5ff]">{selectedAgent.temperature}</span>
-                    </div>
-                    <input
-                      type="range"
-                      min="0"
-                      max="1"
-                      step="0.1"
-                      value={selectedAgent.temperature}
-                      onChange={(e) => {
-                        const val = parseFloat(e.target.value);
-                        setAgents(agents.map(a => a.id === selectedAgent.id ? { ...a, temperature: val } : a));
-                        setSelectedAgent({ ...selectedAgent, temperature: val });
-                      }}
-                      className="w-full accent-[#00f5ff]"
-                    />
-                  </div>
-
-                  <div className="space-y-1">
-                    <span className="text-[10px] font-bold text-slate-400 uppercase">System Context Instructions</span>
-                    <div className="w-full bg-[#040814]/80 border border-[rgba(255,255,255,0.05)] rounded-xl p-3 text-xs text-slate-300 leading-relaxed font-mono whitespace-pre-wrap max-h-[220px] overflow-y-auto">
-                      {selectedAgent.systemPrompt}
+                showHistory ? (
+                  /* Prompt Version History View Drawer */
+                  <div className="space-y-4 animate-slideUp">
+                    <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Prompt Revision History</span>
+                    <div className="space-y-3">
+                      {mockVersions.map((ver) => (
+                        <div
+                          key={ver.version}
+                          className="p-3 rounded-xl bg-[#040814]/60 border border-[rgba(255,255,255,0.04)] space-y-2 hover:border-[#0066ff]/20 transition-all"
+                        >
+                          <div className="flex items-center justify-between">
+                            <span className="text-xs font-bold text-white">Version v{ver.version}</span>
+                            <button
+                              onClick={() => restorePromptVersion(ver.text)}
+                              className="inline-flex items-center gap-1 text-[9px] font-bold bg-[#0066ff]/10 hover:bg-[#0066ff] text-[#00f5ff] hover:text-white px-2 py-0.5 rounded-lg border border-[#0066ff]/20 transition-all"
+                            >
+                              <CornerUpLeft className="w-3 h-3" />
+                              Restore
+                            </button>
+                          </div>
+                          <p className="text-[10px] font-mono text-slate-400 line-clamp-3 leading-relaxed">{ver.text}</p>
+                          <div className="flex items-center justify-between text-[8px] text-slate-500 font-semibold uppercase tracking-wider pt-1 border-t border-[rgba(255,255,255,0.02)]">
+                            <span className="flex items-center gap-1"><User className="w-2.5 h-2.5" /> {ver.author}</span>
+                            <span className="flex items-center gap-1"><Calendar className="w-2.5 h-2.5" /> {ver.date}</span>
+                          </div>
+                        </div>
+                      ))}
                     </div>
                   </div>
-                </div>
+                ) : (
+                  /* Regular Config View */
+                  <div className="space-y-4 animate-fadeIn">
+                    <div className="p-4 rounded-xl bg-[#040814]/50 border border-[rgba(255,255,255,0.04)] space-y-1">
+                      <span className="text-[9px] font-semibold text-slate-500 uppercase">Agent ID</span>
+                      <p className="text-xs font-mono text-slate-300">{selectedAgent.id}</p>
+                    </div>
+
+                    <div className="space-y-1">
+                      <span className="text-[10px] font-bold text-slate-400 uppercase">Model Target</span>
+                      <p className="text-xs text-white capitalize font-semibold">{selectedAgent.modelProvider} / {selectedAgent.modelName}</p>
+                    </div>
+
+                    <div className="space-y-2">
+                      <div className="flex items-center justify-between text-[10px] font-bold text-slate-400 uppercase">
+                        <span>Temperature</span>
+                        <span className="text-[#00f5ff]">{selectedAgent.temperature}</span>
+                      </div>
+                      <input
+                        type="range"
+                        min="0"
+                        max="1"
+                        step="0.1"
+                        value={selectedAgent.temperature}
+                        onChange={(e) => {
+                          const val = parseFloat(e.target.value);
+                          setAgents(agents.map(a => a.id === selectedAgent.id ? { ...a, temperature: val } : a));
+                          setSelectedAgent({ ...selectedAgent, temperature: val });
+                        }}
+                        className="w-full accent-[#00f5ff]"
+                      />
+                    </div>
+
+                    <div className="space-y-1">
+                      <span className="text-[10px] font-bold text-slate-400 uppercase">System Context Instructions</span>
+                      <textarea
+                        rows={6}
+                        value={selectedAgent.systemPrompt}
+                        onChange={(e) => {
+                          const text = e.target.value;
+                          setAgents(agents.map(a => a.id === selectedAgent.id ? { ...a, systemPrompt: text } : a));
+                          setSelectedAgent({ ...selectedAgent, systemPrompt: text });
+                        }}
+                        className="w-full bg-[#040814] border border-[rgba(255,255,255,0.06)] rounded-xl p-3 text-xs text-slate-300 leading-relaxed font-mono focus:outline-none focus:border-[#00f5ff]"
+                      />
+                    </div>
+                  </div>
+                )
               ) : (
                 <div className="text-center py-12 text-slate-500 text-xs">No agent selected.</div>
               )}

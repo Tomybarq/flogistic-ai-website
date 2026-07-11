@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { MOCK_WORKFLOWS } from "@/lib/db";
+import { MOCK_WORKFLOWS, MOCK_AGENTS } from "@/lib/db";
 import { Workflow } from "@/types/database.types";
 import {
   GitFork,
@@ -14,8 +14,9 @@ import {
   Slack,
   Mail,
   Loader2,
-  CheckCircle,
-  HelpCircle
+  Settings,
+  ChevronRight,
+  Info
 } from "lucide-react";
 
 export default function AutomationHubPage() {
@@ -24,6 +25,11 @@ export default function AutomationHubPage() {
   const [isRunning, setIsRunning] = useState(false);
   const [runLogs, setRunLogs] = useState<string[]>([]);
   const [activeRunNodeId, setActiveRunNodeId] = useState<string | null>(null);
+
+  // Properties Panel states
+  const [selectedNodeId, setSelectedNodeId] = useState<string | null>(
+    activeWorkflow?.graphData.nodes[0]?.id || null
+  );
 
   const nodeIcons = {
     webhookTrigger: Webhook,
@@ -62,6 +68,23 @@ export default function AutomationHubPage() {
     setIsRunning(false);
   };
 
+  const selectedNode = activeWorkflow?.graphData.nodes.find(n => n.id === selectedNodeId);
+
+  // Handler to update selected node property labels
+  const handleUpdateNodeLabel = (newLabel: string) => {
+    if (!activeWorkflow || !selectedNodeId) return;
+    const updatedNodes = activeWorkflow.graphData.nodes.map(n => 
+      n.id === selectedNodeId ? { ...n, data: { ...n.data, label: newLabel } } : n
+    );
+    setActiveWorkflow({
+      ...activeWorkflow,
+      graphData: {
+        ...activeWorkflow.graphData,
+        nodes: updatedNodes
+      }
+    });
+  };
+
   return (
     <div className="space-y-6">
       {/* Title / Action bar */}
@@ -96,52 +119,47 @@ export default function AutomationHubPage() {
         </div>
       </div>
 
-      {/* Editor Layout Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 items-stretch min-h-[640px]">
+      {/* Editor Layout Grid: 5-columns for expanded control properties panel */}
+      <div className="grid grid-cols-1 lg:grid-cols-5 gap-6 items-stretch min-h-[640px]">
         
-        {/* Node Drawer Sidebar */}
-        <div className="space-y-6">
-          <div className="glass-card bg-[rgba(11,19,41,0.4)] border border-[rgba(255,255,255,0.06)] p-6 space-y-4">
-            <h2 className="text-sm font-semibold text-white tracking-wide uppercase">Trigger Modules</h2>
+        {/* Col 1: Node Drawer Sidebar */}
+        <div className="space-y-6 lg:col-span-1">
+          <div className="glass-card bg-[rgba(11,19,41,0.4)] border border-[rgba(255,255,255,0.06)] p-4 space-y-4">
+            <h2 className="text-xs font-bold text-white tracking-wider uppercase">Triggers</h2>
             <div className="space-y-2">
-              <div className="flex items-center space-x-3 p-3 rounded-xl bg-[#040814]/40 border border-[rgba(255,255,255,0.04)] cursor-grab hover:border-[#00f5ff]/20 transition-all text-xs font-semibold text-slate-300">
-                <Webhook className="w-4 h-4 text-[#00f5ff]" />
+              <div className="flex items-center space-x-2.5 p-2.5 rounded-xl bg-[#040814]/40 border border-[rgba(255,255,255,0.04)] cursor-grab hover:border-[#00f5ff]/20 transition-all text-xs font-semibold text-slate-300">
+                <Webhook className="w-3.5 h-3.5 text-[#00f5ff]" />
                 <span>Webhook Trigger</span>
-              </div>
-              <div className="flex items-center space-x-3 p-3 rounded-xl bg-[#040814]/40 border border-[rgba(255,255,255,0.04)] cursor-grab hover:border-[#00f5ff]/20 transition-all text-xs font-semibold text-slate-300">
-                <GitFork className="w-4 h-4 text-[#00f5ff]" />
-                <span>Schedule Event</span>
               </div>
             </div>
           </div>
 
-          <div className="glass-card bg-[rgba(11,19,41,0.4)] border border-[rgba(255,255,255,0.06)] p-6 space-y-4">
-            <h2 className="text-sm font-semibold text-white tracking-wide uppercase">Action Modules</h2>
+          <div className="glass-card bg-[rgba(11,19,41,0.4)] border border-[rgba(255,255,255,0.06)] p-4 space-y-4">
+            <h2 className="text-xs font-bold text-white tracking-wider uppercase">Actions</h2>
             <div className="space-y-2">
-              <div className="flex items-center space-x-3 p-3 rounded-xl bg-[#040814]/40 border border-[rgba(255,255,255,0.04)] cursor-grab hover:border-[#00f5ff]/20 transition-all text-xs font-semibold text-slate-300">
-                <Cpu className="w-4 h-4 text-[#0066ff]" />
+              <div className="flex items-center space-x-2.5 p-2.5 rounded-xl bg-[#040814]/40 border border-[rgba(255,255,255,0.04)] cursor-grab hover:border-[#00f5ff]/20 transition-all text-xs font-semibold text-slate-300">
+                <Cpu className="w-3.5 h-3.5 text-[#0066ff]" />
                 <span>AI Agent Task</span>
               </div>
-              <div className="flex items-center space-x-3 p-3 rounded-xl bg-[#040814]/40 border border-[rgba(255,255,255,0.04)] cursor-grab hover:border-[#00f5ff]/20 transition-all text-xs font-semibold text-slate-300">
-                <Database className="w-4 h-4 text-emerald-400" />
+              <div className="flex items-center space-x-2.5 p-2.5 rounded-xl bg-[#040814]/40 border border-[rgba(255,255,255,0.04)] cursor-grab hover:border-[#00f5ff]/20 transition-all text-xs font-semibold text-slate-300">
+                <Database className="w-3.5 h-3.5 text-emerald-400" />
                 <span>Database Query</span>
               </div>
-              <div className="flex items-center space-x-3 p-3 rounded-xl bg-[#040814]/40 border border-[rgba(255,255,255,0.04)] cursor-grab hover:border-[#00f5ff]/20 transition-all text-xs font-semibold text-slate-300">
-                <Slack className="w-4 h-4 text-orange-400" />
+              <div className="flex items-center space-x-2.5 p-2.5 rounded-xl bg-[#040814]/40 border border-[rgba(255,255,255,0.04)] cursor-grab hover:border-[#00f5ff]/20 transition-all text-xs font-semibold text-slate-300">
+                <Slack className="w-3.5 h-3.5 text-orange-400" />
                 <span>Slack Alert</span>
               </div>
-              <div className="flex items-center space-x-3 p-3 rounded-xl bg-[#040814]/40 border border-[rgba(255,255,255,0.04)] cursor-grab hover:border-[#00f5ff]/20 transition-all text-xs font-semibold text-slate-300">
-                <Mail className="w-4 h-4 text-blue-400" />
+              <div className="flex items-center space-x-2.5 p-2.5 rounded-xl bg-[#040814]/40 border border-[rgba(255,255,255,0.04)] cursor-grab hover:border-[#00f5ff]/20 transition-all text-xs font-semibold text-slate-300">
+                <Mail className="w-3.5 h-3.5 text-blue-400" />
                 <span>Send Email</span>
               </div>
             </div>
           </div>
         </div>
 
-        {/* Visual Graph Editor Canvas */}
+        {/* Col 2-4: Visual Graph Editor Canvas */}
         <div className="lg:col-span-3 flex flex-col items-stretch justify-between relative glass-card bg-[rgba(4,8,20,0.5)] border border-[rgba(255,255,255,0.06)] overflow-hidden">
-          
-          {/* Canvas Dot Pattern overlay */}
+          {/* Canvas Dot Pattern */}
           <div
             className="absolute inset-0 opacity-[0.03] pointer-events-none"
             style={{
@@ -157,58 +175,57 @@ export default function AutomationHubPage() {
             </div>
             <div className="flex items-center space-x-2 text-[10px] text-slate-400">
               <div className="w-2 h-2 rounded-full bg-emerald-500" />
-              <span>GraphQL Pipeline Active</span>
+              <span>Canvas Listener Ready</span>
             </div>
           </div>
 
-          {/* Interactive Node Graph area */}
-          <div className="flex-1 p-8 overflow-auto flex flex-col items-center justify-center min-h-[380px] z-10">
+          {/* Graph Nodes */}
+          <div className="flex-1 p-6 overflow-auto flex flex-col items-center justify-center min-h-[380px] z-10">
             {activeWorkflow ? (
-              <div className="flex flex-wrap lg:flex-nowrap items-center justify-center gap-12 py-8">
+              <div className="flex flex-wrap lg:flex-nowrap items-center justify-center gap-8 py-8">
                 {activeWorkflow.graphData.nodes.map((node, index) => {
                   const Icon = nodeIcons[node.type as keyof typeof nodeIcons] || GitFork;
                   const isNodeActive = activeRunNodeId === node.id;
+                  const isSelected = selectedNodeId === node.id;
                   
                   return (
                     <React.Fragment key={node.id}>
                       {/* Node block */}
                       <div
-                        className={`w-52 glass-card bg-[rgba(11,19,41,0.6)] p-4 flex flex-col space-y-3 transition-all duration-300 relative border ${
+                        onClick={() => setSelectedNodeId(node.id)}
+                        className={`w-48 glass-card bg-[rgba(11,19,41,0.6)] p-3.5 flex flex-col space-y-3 transition-all duration-300 relative border cursor-pointer ${
                           isNodeActive
-                            ? "border-[#00f5ff] shadow-[0_0_20px_rgba(0,245,255,0.15)] translate-y-[-2px] scale-105"
-                            : "border-[rgba(255,255,255,0.06)] hover:border-[#0066ff]/40"
+                            ? "border-[#00f5ff] shadow-[0_0_20px_rgba(0,245,255,0.15)] translate-y-[-2px]"
+                            : isSelected
+                            ? "border-[#0066ff] shadow-[0_0_12px_rgba(0,102,255,0.15)] translate-y-[-1px]"
+                            : "border-[rgba(255,255,255,0.06)] hover:border-slate-500/40"
                         }`}
                       >
                         <div className="flex items-center space-x-2.5">
-                          <div className={`p-2 rounded-lg bg-[#040814]/60 border border-[rgba(255,255,255,0.06)] ${isNodeActive ? "text-[#00f5ff]" : "text-slate-400"}`}>
+                          <div className={`p-2 rounded-lg bg-[#040814]/60 border border-[rgba(255,255,255,0.06)] ${isSelected ? "text-[#00f5ff]" : "text-slate-400"}`}>
                             <Icon className="w-4 h-4" />
                           </div>
                           <div className="flex flex-col truncate">
-                            <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wide">
+                            <span className="text-[9px] font-bold text-slate-500 uppercase tracking-wide">
                               {node.type.replace(/([A-Z])/g, " $1")}
                             </span>
                             <span className="text-xs font-semibold text-white truncate">{node.data.label}</span>
                           </div>
                         </div>
-                        
-                        {/* Node status details */}
-                        <div className="text-[10px] text-slate-400 font-mono bg-[#040814]/50 border border-[rgba(255,255,255,0.02)] p-2 rounded-lg truncate">
-                          {node.type === "agentExecution" ? "Agent: triager_bot" : "Active Listener"}
-                        </div>
 
                         {/* Input/Output connectors */}
                         {index > 0 && (
-                          <div className="absolute left-0 top-1/2 -translate-x-1.5 -translate-y-1.5 w-3 h-3 rounded-full bg-[#040814] border-2 border-slate-600" />
+                          <div className="absolute left-0 top-1/2 -translate-x-1.5 -translate-y-1.5 w-2.5 h-2.5 rounded-full bg-[#040814] border-2 border-slate-600" />
                         )}
                         {index < activeWorkflow.graphData.nodes.length - 1 && (
-                          <div className="absolute right-0 top-1/2 translate-x-1.5 -translate-y-1.5 w-3 h-3 rounded-full bg-[#040814] border-2 border-[#00f5ff]" />
+                          <div className="absolute right-0 top-1/2 translate-x-1.5 -translate-y-1.5 w-2.5 h-2.5 rounded-full bg-[#040814] border-2 border-[#00f5ff]" />
                         )}
                       </div>
 
                       {/* Connection arrows */}
                       {index < activeWorkflow.graphData.nodes.length - 1 && (
                         <div className="hidden lg:flex items-center text-slate-600 font-bold shrink-0">
-                          <span className="text-lg">➔</span>
+                          <ChevronRight className="w-4 h-4" />
                         </div>
                       )}
                     </React.Fragment>
@@ -235,10 +252,131 @@ export default function AutomationHubPage() {
                 ))}
               </div>
             ) : (
-              <p className="text-slate-500">No active run logs. Click "Run Workflow" to trigger.</p>
+              <p className="text-slate-500">No active run logs. Click &quot;Run Workflow&quot; to trigger.</p>
             )}
           </div>
+        </div>
 
+        {/* Col 5: Properties Panel */}
+        <div className="lg:col-span-1 flex flex-col">
+          <div className="glass-card bg-[rgba(11,19,41,0.4)] border border-[rgba(255,255,255,0.06)] p-5 flex flex-col justify-between h-full">
+            <div className="space-y-5">
+              <h2 className="text-xs font-bold text-white tracking-wider uppercase flex items-center gap-1.5">
+                <Settings className="w-4 h-4 text-slate-400" />
+                Properties Editor
+              </h2>
+
+              {selectedNode ? (
+                <div className="space-y-4">
+                  <div className="space-y-1">
+                    <label className="text-[9px] font-bold text-slate-500 uppercase tracking-wide">Node Name</label>
+                    <input
+                      type="text"
+                      value={selectedNode.data.label || ""}
+                      onChange={(e) => handleUpdateNodeLabel(e.target.value)}
+                      className="w-full bg-[#040814] border border-[rgba(255,255,255,0.06)] rounded-xl px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-[#00f5ff]"
+                    />
+                  </div>
+
+                  {/* Webhook Properties */}
+                  {selectedNode.type === "webhookTrigger" && (
+                    <div className="space-y-3.5 pt-2">
+                      <div className="space-y-1">
+                        <label className="text-[9px] font-bold text-slate-500 uppercase tracking-wide">HTTP Method</label>
+                        <select className="w-full bg-[#040814] border border-[rgba(255,255,255,0.06)] rounded-xl px-2 py-1.5 text-xs text-slate-300">
+                          <option>POST (Recommended)</option>
+                          <option>GET</option>
+                        </select>
+                      </div>
+                      <div className="space-y-1">
+                        <label className="text-[9px] font-bold text-slate-500 uppercase tracking-wide">Trigger endpoint</label>
+                        <div className="bg-[#040814] border border-[rgba(255,255,255,0.06)] rounded-xl p-2.5 font-mono text-[9px] text-[#00f5ff] break-all select-all">
+                          https://api.flogistic.ai/v1/hooks/run/wk_8829
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Agent properties */}
+                  {selectedNode.type === "agentExecution" && (
+                    <div className="space-y-3.5 pt-2">
+                      <div className="space-y-1">
+                        <label className="text-[9px] font-bold text-slate-500 uppercase tracking-wide">Select Agent Instance</label>
+                        <select className="w-full bg-[#040814] border border-[rgba(255,255,255,0.06)] rounded-xl px-2 py-1.5 text-xs text-slate-300">
+                          {MOCK_AGENTS.map(agent => (
+                            <option key={agent.id} value={agent.id}>{agent.name}</option>
+                          ))}
+                        </select>
+                      </div>
+                      <div className="space-y-1">
+                        <label className="text-[9px] font-bold text-slate-500 uppercase tracking-wide">Routing Tier</label>
+                        <select className="w-full bg-[#040814] border border-[rgba(255,255,255,0.06)] rounded-xl px-2 py-1.5 text-xs text-slate-300">
+                          <option>Cost Optimized (Flash)</option>
+                          <option>Intelligence Optimized (Pro)</option>
+                        </select>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Database properties */}
+                  {selectedNode.type === "databaseAction" && (
+                    <div className="space-y-3.5 pt-2">
+                      <div className="space-y-1">
+                        <label className="text-[9px] font-bold text-slate-500 uppercase tracking-wide">Target Table</label>
+                        <input
+                          type="text"
+                          defaultValue="leads"
+                          className="w-full bg-[#040814] border border-[rgba(255,255,255,0.06)] rounded-xl px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-[#00f5ff]"
+                        />
+                      </div>
+                      <div className="space-y-1">
+                        <label className="text-[9px] font-bold text-slate-500 uppercase tracking-wide">Operation</label>
+                        <select className="w-full bg-[#040814] border border-[rgba(255,255,255,0.06)] rounded-xl px-2 py-1.5 text-xs text-slate-300">
+                          <option>INSERT INTO</option>
+                          <option>UPDATE TABLE</option>
+                          <option>SELECT FROM</option>
+                        </select>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Slack properties */}
+                  {selectedNode.type === "slackNotification" && (
+                    <div className="space-y-3.5 pt-2">
+                      <div className="space-y-1">
+                        <label className="text-[9px] font-bold text-slate-500 uppercase tracking-wide">Slack Channel</label>
+                        <input
+                          type="text"
+                          defaultValue="#ops-alerts"
+                          className="w-full bg-[#040814] border border-[rgba(255,255,255,0.06)] rounded-xl px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-[#00f5ff]"
+                        />
+                      </div>
+                      <div className="space-y-1">
+                        <label className="text-[9px] font-bold text-slate-500 uppercase tracking-wide">Payload format</label>
+                        <textarea
+                          rows={2}
+                          defaultValue='{"text": "Agent qualified lead: {{lead_name}}"}'
+                          className="w-full bg-[#040814] border border-[rgba(255,255,255,0.06)] rounded-xl p-2 text-[10px] font-mono text-slate-300 resize-none focus:outline-none focus:border-[#00f5ff]"
+                        />
+                      </div>
+                    </div>
+                  )}
+
+                </div>
+              ) : (
+                <div className="text-center py-12 text-slate-500 text-xs flex flex-col items-center gap-1">
+                  <Info className="w-5 h-5 text-slate-600" />
+                  <span>Click a node to configure properties.</span>
+                </div>
+              )}
+            </div>
+
+            {selectedNode && (
+              <div className="border-t border-[rgba(255,255,255,0.05)] pt-3 text-[9px] text-slate-500 leading-normal">
+                Adjustments sync instantly. Changes will deploy on your next save.
+              </div>
+            )}
+          </div>
         </div>
 
       </div>

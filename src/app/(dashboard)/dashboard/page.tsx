@@ -89,6 +89,75 @@ export default function DashboardPage() {
         ))}
       </div>
 
+      {/* Token Consumption Chart */}
+      <div className="glass-card bg-[rgba(11,19,41,0.4)] border border-[rgba(255,255,255,0.06)] p-6 space-y-6">
+        <div className="flex flex-wrap items-center justify-between gap-4">
+          <div className="space-y-1">
+            <h2 className="text-lg font-semibold text-white flex items-center gap-2">
+              <Zap className="w-5 h-5 text-amber-400" />
+              Token Consumption & API Activity
+            </h2>
+            <p className="text-slate-400 text-xs">Real-time daily usage across Google, OpenAI, and Anthropic endpoints.</p>
+          </div>
+          <div className="flex items-center gap-4 text-[10px] font-semibold text-slate-400 tracking-wider uppercase">
+            <span className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-full bg-[#0066ff]" /> Google</span>
+            <span className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-full bg-[#00f5ff]" /> OpenAI</span>
+            <span className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-full bg-emerald-400" /> Anthropic</span>
+          </div>
+        </div>
+
+        {/* Custom SVG Line Chart */}
+        <div className="relative w-full h-48 bg-[#040814]/40 rounded-xl border border-[rgba(255,255,255,0.04)] p-6 flex items-center justify-center">
+          <svg className="w-full h-full overflow-visible" viewBox="0 0 500 150" preserveAspectRatio="none">
+            <defs>
+              <linearGradient id="chart-glow" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stopColor="#0066ff" stopOpacity="0.25" />
+                <stop offset="100%" stopColor="#00f5ff" stopOpacity="0" />
+              </linearGradient>
+              <linearGradient id="line-grad" x1="0" y1="0" x2="1" y2="0">
+                <stop offset="0%" stopColor="#0066ff" />
+                <stop offset="50%" stopColor="#00f5ff" />
+                <stop offset="100%" stopColor="#10b981" />
+              </linearGradient>
+            </defs>
+            
+            {/* Grid Lines */}
+            <line x1="0" y1="37.5" x2="500" y2="37.5" stroke="rgba(255,255,255,0.03)" strokeWidth="1" />
+            <line x1="0" y1="75" x2="500" y2="75" stroke="rgba(255,255,255,0.03)" strokeWidth="1" />
+            <line x1="0" y1="112.5" x2="500" y2="112.5" stroke="rgba(255,255,255,0.03)" strokeWidth="1" />
+            
+            {/* Area Path */}
+            <path
+              d="M 0,130 C 50,110 80,40 120,50 C 160,60 200,120 250,90 C 300,60 330,20 380,30 C 430,40 450,100 500,80 L 500,150 L 0,150 Z"
+              fill="url(#chart-glow)"
+            />
+            
+            {/* Line Path */}
+            <path
+              d="M 0,130 C 50,110 80,40 120,50 C 160,60 200,120 250,90 C 300,60 330,20 380,30 C 430,40 450,100 500,80"
+              fill="none"
+              stroke="url(#line-grad)"
+              strokeWidth="2.5"
+            />
+            
+            {/* Interactive/Highlight Dots */}
+            <circle cx="120" cy="50" r="4" fill="#00f5ff" />
+            <circle cx="380" cy="30" r="4" fill="#00f5ff" />
+          </svg>
+          
+          {/* Day Labels Overlay */}
+          <div className="absolute bottom-1 left-4 right-4 flex justify-between text-[9px] text-slate-500 font-mono tracking-wider">
+            <span>MON</span>
+            <span>TUE</span>
+            <span>WED</span>
+            <span>THU</span>
+            <span>FRI</span>
+            <span>SAT</span>
+            <span>SUN</span>
+          </div>
+        </div>
+      </div>
+
       {/* Main Section Grid */}
       <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
         {/* Quick Launchpads */}
