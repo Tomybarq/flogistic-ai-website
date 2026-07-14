@@ -9,6 +9,8 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@base44/sdk": "^0.8.39",
+    "@base44/vite-plugin": "^1.0.30",
     "@hookform/resolvers": "^5.4.0",
     "@supabase/supabase-js": "^2.110.2",
     "@upstash/ratelimit": "^2.0.8",
